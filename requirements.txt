@@ -1,1 +1,2 @@
 git+https://github.com/metwork-framework/xattrfile.git#egg=xattrfile
+git+https://github.com/metwork-framework/mfutil.git#egg=mfutil
