@@ -54,24 +54,24 @@ jobs:
         host: ${{ secrets.PUB_HOST }}
         username: ${{ secrets.PUB_USERNAME }}
         password: ${{ secrets.PUB_PASSWORD }}
-    - name: Coverage
-      run: |
-        make coverage
-    - name: Publish coverage 1
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.PUB_HOST }}
-        username: ${{ secrets.PUB_USERNAME }}
-        password: ${{ secrets.PUB_PASSWORD }}
-        port: 22
-        script: |
-          rm -Rf coverage
-          mkdir coverage
-    - name: Publish coverage 2
-      uses: garygrossgarten/github-action-scp@release
-      with:
-        local: htmlcov
-        remote: coverage
-        host: ${{ secrets.PUB_HOST }}
-        username: ${{ secrets.PUB_USERNAME }}
-        password: ${{ secrets.PUB_PASSWORD }}
+#   - name: Coverage
+#     run: |
+#       make coverage
+#   - name: Publish coverage 1
+#     uses: appleboy/ssh-action@master
+#     with:
+#       host: ${{ secrets.PUB_HOST }}
+#       username: ${{ secrets.PUB_USERNAME }}
+#       password: ${{ secrets.PUB_PASSWORD }}
+#       port: 22
+#       script: |
+#         rm -Rf coverage
+#         mkdir coverage
+#   - name: Publish coverage 2
+#     uses: garygrossgarten/github-action-scp@release
+#     with:
+#       local: htmlcov
+#       remote: coverage
+#       host: ${{ secrets.PUB_HOST }}
+#       username: ${{ secrets.PUB_USERNAME }}
+#       password: ${{ secrets.PUB_PASSWORD }}
