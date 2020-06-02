@@ -1,4 +1,4 @@
 git+https://github.com/metwork-framework/xattrfile.git#egg=xattrfile
 git+https://github.com/metwork-framework/mfutil.git#egg=mfutil
-git+https://github.com/metwork-framework/mfplugin.git#egg=mfplugin; python_version > 3
+git+https://github.com/metwork-framework/mfplugin.git#egg=mfplugin; python_version > '3.0'
 git+https://github.com/thefab/pystatsd.git#egg=statsd
