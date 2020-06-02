@@ -10,13 +10,17 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        python-version: [2.7, 3.7]
+    name: Python ${{ matrix.python-version }}
+²
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.7
+    - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
-        python-version: 3.7
+        python-version: ${{ matrix.python-version }}
     - name: Install dev dependencies
       run: |
         python -m pip install --upgrade pip
@@ -29,14 +33,15 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --max-line-length=80 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --statistics
-    - name: Tests
-      run: |
-        #make test
-        echo 1
+#   - name: Tests
+#     run: |
+#       make test
     - name: Doc
+      if: ${{ matrix.python-version == 3.7 }}
       run: |
         make doc
     - name: Publish doc 1
+      if: ${{ matrix.python-version == 3.7 }}
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.PUB_HOST }}
@@ -47,6 +52,7 @@ jobs:
           rm -Rf doc
           mkdir doc
     - name: Publish doc 2
+      if: ${{ matrix.python-version == 3.7 }}
       uses: garygrossgarten/github-action-scp@release
       with:
         local: html/acquisition
