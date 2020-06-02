@@ -1,2 +1,1 @@
-redis
-mockredispy
+git+https://github.com/metwork-framework/xattrfile.git#egg=xattrfile
