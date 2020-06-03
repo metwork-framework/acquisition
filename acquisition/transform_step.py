@@ -1,6 +1,10 @@
-from collections.abc import Iterable
 from xattrfile import XattrFile
 from acquisition.step import AcquisitionStep
+# collections.abc does not exist in python2
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
 
 
 class AcquisitionTransformStep(AcquisitionStep):
