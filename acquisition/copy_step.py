@@ -25,6 +25,7 @@ class AcquisitionCopyStep(AcquisitionStep):
                     hardlink = False
                     step_name = tmp2[1].strip()
                 self.dest_dirs.append((plugin_name, step_name, hardlink))
+                self.add_virtual_trace(plugin_name, step_name)
 
     def add_extra_arguments(self, parser):
         parser.add_argument(
@@ -125,8 +126,9 @@ class AcquisitionCopyStep(AcquisitionStep):
         #         If we didn't use hardlinking for other directories => move
         # If there is some errors:
         #     => copy to keep the original file for trash policy
+        plugin_name, step_name, hardlink = dest_dirs[-1]
         if result:
-            if dest_dirs[-1][2]:
+            if hardlink:
                 # we can hardlink here, so we can move last one
                 result = result and \
                     self.move_to_plugin_step(xaf, plugin_name,
