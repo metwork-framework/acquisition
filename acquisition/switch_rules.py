@@ -170,19 +170,11 @@ class AlwaystrueRulesBlock(ZeroParameterRulesBlock):
         return True
 
 
-class PythonRulesBlock(OneParameterRulesBlock):
+class PythonRulesBlock(ZeroParameterRulesBlock):
 
     def __init__(self, *args, **kwargs):
-        OneParameterRulesBlock.__init__(self, *args, **kwargs)
-        if ":" in self.params[0]:
-            self.sys_path = self.params[0].split(':')[0]
-            self.func_path = self.params[0].split(':')[1]
-        else:
-            self.sys_path = ""
-            self.func_path = self.params[0]
-        self.func_name = self.func_path.split('.')[-1]
-        self.module_path = ".".join(self.func_path.split('.')[0:-1])
-        self._func = None
+        ZeroParameterRulesBlock.__init__(self, *args, **kwargs)
+        self._funcs = {}
 
     @property
     def func(self):
@@ -192,11 +184,26 @@ class PythonRulesBlock(OneParameterRulesBlock):
                 self._func = getattr(mod, self.func_name)
         return self._func
 
+    def get_func(self, rule_pattern):
+        if rule_pattern not in self._funcs:
+            if ":" in rule_pattern:
+                sys_path = rule_pattern.split(':')[0]
+                func_path = rule_pattern.split(':')[1]
+            else:
+                sys_path = ""
+                func_path = rule_pattern
+            func_name = func_path.split('.')[-1]
+            module_path = ".".join(func_path.split('.')[0:-1])
+            with add_sys_path(sys_path):
+                mod = importlib.import_module(module_path)
+                func = getattr(mod, func_name)
+                self._funcs[rule_pattern] = func
+        return self._funcs[rule_pattern]
+
     def eval(self, xaf, rule_pattern):
-        func = self.func
-        res = func(xaf, rule_pattern)
-        LOGGER.debug("%s(xaf, %s) switch rule => %s" %
-                     (self.func_path, rule_pattern, res))
+        func = self.get_func(rule_pattern)
+        res = func(xaf)
+        LOGGER.debug("%s(xaf) switch rule => %s" % (func, res))
         return res
 
 
