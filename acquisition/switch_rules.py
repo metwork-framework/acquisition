@@ -2,6 +2,7 @@ import fnmatch
 import re
 import importlib
 import sys
+import time
 from mflog import get_logger
 from opinionated_configparser import OpinionatedConfigParser
 
@@ -78,12 +79,17 @@ class RulesBlock(object):
     def evaluate(self, xaf):
         actions = set()
         for rule in self.switch_rules:
-            res = self.eval(xaf, rule.pattern)
-            if res:
-                LOGGER.debug("=> adding actions: %s" %
-                             ", ".join([str(x) for x in rule.actions]))
-                actions = actions.union(rule.actions)
-        return actions
+            try:
+                res = self.eval(xaf, rule.pattern)
+            except Exception:
+                LOGGER.exception("exception during rule block %s eval on %s" %
+                                 (self, rule.pattern))
+            else:
+                if res:
+                    LOGGER.debug("=> adding actions: %s" %
+                                 ", ".join([str(x) for x in rule.actions]))
+                    actions = actions.union(rule.actions)
+        return (actions, len(self.switch_rules))
 
     def get_virtual_targets(self):
         targets = set()
@@ -176,14 +182,6 @@ class PythonRulesBlock(ZeroParameterRulesBlock):
         ZeroParameterRulesBlock.__init__(self, *args, **kwargs)
         self._funcs = {}
 
-    @property
-    def func(self):
-        if self._func is None:
-            with add_sys_path(self.sys_path):
-                mod = importlib.import_module(self.module_path)
-                self._func = getattr(mod, self.func_name)
-        return self._func
-
     def get_func(self, rule_pattern):
         if rule_pattern not in self._funcs:
             if ":" in rule_pattern:
@@ -202,7 +200,11 @@ class PythonRulesBlock(ZeroParameterRulesBlock):
 
     def eval(self, xaf, rule_pattern):
         func = self.get_func(rule_pattern)
+        before = time.time()
         res = func(xaf)
+        after = time.time()
+        if (after - before) > 1.0:
+            LOGGER.warning("more than 1s passed in %s function", func)
         LOGGER.debug("%s(xaf) switch rule => %s" % (func, res))
         return res
 
@@ -217,9 +219,15 @@ class RulesSet(object):
 
     def evaluate(self, xaf):
         actions = set()
+        total_rules = 0
+        before = time.time()
         for rule_block in self.rule_blocks:
-            res = rule_block.evaluate(xaf)
+            res, rules_count = rule_block.evaluate(xaf)
             actions = actions.union(res)
+            total_rules = total_rules + rules_count
+        after = time.time()
+        LOGGER.debug("%i rules evaluated in a total of %i ms",
+                     total_rules, int(1000.0 * (after - before)))
         return actions
 
     def get_virtual_targets(self):
