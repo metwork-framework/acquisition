@@ -1,13 +1,23 @@
 #!/usr/bin/env python3
 
 import os
+import hashlib
 from acquisition.copy_step import AcquisitionCopyStep
 from acquisition.utils import _get_or_make_trash_dir
 from xattrfile import XattrFile
-from acquisition.switch_rules import RulesReader, HardlinkAction
+from acquisition.switch_rules import RulesReader, HardlinkAction, RulesSet
 
 MFDATA_CURRENT_PLUGIN_DIR = os.environ.get("MFDATA_CURRENT_PLUGIN_DIR",
                                            "{{MFDATA_CURRENT_PLUGIN_DIR}}")
+
+
+def md5sumfile(path):
+    try:
+        with open(path, 'r') as f:
+            c = f.read()
+    except Exception:
+        return "empty"
+    return hashlib.md5(c.encode('utf8')).hexdigest()
 
 
 class AcquisitionSwitchStep(AcquisitionCopyStep):
@@ -17,9 +27,13 @@ class AcquisitionSwitchStep(AcquisitionCopyStep):
         x = RulesReader()
         r = self.args.rules_file
         if not os.path.isfile(r):
-            raise Exception("rules_path value: %s is not a file" % r)
-        self.rules_set = x.read(
-            r, self.args.switch_section_prefix)
+            self.warning("rules_path value: %s is not a file => let's start "
+                         "with an empty rules_set" % r)
+            self.rules_set = RulesSet()
+        else:
+            self.rules_set = x.read(
+                r, self.args.switch_section_prefix)
+        self.md5sum = md5sumfile(r)
         self.no_match_policy = self.args.no_match_policy
         if self.no_match_policy not in ("delete", "keep"):
             raise Exception("invalid no_match_policy: %s "
@@ -46,6 +60,13 @@ class AcquisitionSwitchStep(AcquisitionCopyStep):
             '--switch-section-prefix', action='store',
             default="switch_rules*",
             help="section prefix for switch rules")
+
+    def ping(self):
+        # Called every second
+        if md5sumfile(self.args.rules_file) != self.md5sum:
+            self.warning("my rules_file has been modified => let's quit to "
+                         "force a restart")
+            self.stop_flag = True
 
     def _keep(self, xaf):
         new_filepath = os.path.join(
