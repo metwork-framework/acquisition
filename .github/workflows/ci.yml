@@ -49,14 +49,14 @@ jobs:
         password: ${{ secrets.PUB_PASSWORD }}
         port: 22
         script: |
-          rm -Rf doc
-          mkdir doc
+          rm -Rf /pub/misc/acquisition/doc 2>/dev/null
+          mkdir /pub/misc/acquisition/doc
     - name: Publish doc 2
       if: ${{ matrix.python-version == 3.7 }}
       uses: garygrossgarten/github-action-scp@release
       with:
         local: html/acquisition
-        remote: doc
+        remote: /pub/misc/acquisition/doc
         host: ${{ secrets.PUB_HOST }}
         username: ${{ secrets.PUB_USERNAME }}
         password: ${{ secrets.PUB_PASSWORD }}
