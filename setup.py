@@ -28,6 +28,7 @@ setup(
     include_package_data=True,
     dependency_links=dependency_links,
     zip_safe=False,
+    url="https://github.com/metwork-framework/acquisition",
     entry_points={
         "console_scripts": [
             "inject_file = acquisition.inject_file:main",
