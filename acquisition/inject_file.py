@@ -31,7 +31,7 @@ def main():
         "--incoming", action="store_true",
         help="ignore plugin and step parameter and inject "
         "the file into the first configured directory listened"
-        " by the MFDATA_INTERNAL_PLUGINS_LISTENED_DIRECTORIES env var")
+        " by the MFDATA_INTERNAL_PLUGINS_WATCHED_DIRECTORIES env var")
 
     args = parser.parse_args()
     try:
@@ -44,7 +44,7 @@ def main():
     else:
         basename = os.path.basename(args.filepath)
     if args.incoming:
-        env_var = 'MFDATA_INTERNAL_PLUGINS_LISTENED_DIRECTORIES'
+        env_var = 'MFDATA_INTERNAL_PLUGINS_WATCHED_DIRECTORIES'
         first_directory = os.environ[env_var].split(',')[0]
         new_filepath = os.path.join(os.environ['MFDATA_DATA_IN_DIR'],
                                     first_directory, basename)
