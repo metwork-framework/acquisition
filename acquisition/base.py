@@ -176,8 +176,6 @@ class AcquisitionBase(object):
         env_var = "%s_CURRENT_PLUGIN_%s_%s" % \
             (MFMODULE, section.replace('-', '_').upper(),
              key.replace('-', '_').upper())
-        if env_var not in os.environ:
-            raise Exception("%s does not exist in the environment" % env_var)
         val = os.environ.get(env_var, default)
         if isinstance(val, Exception):
             # pylint: disable=E0702
