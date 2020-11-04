@@ -11,6 +11,7 @@
 
 
 ### Bug Fixes
+- fix issue in get_config_value with default values
 - fix issue about wrong env name in inject_file
 
 
