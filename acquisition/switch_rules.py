@@ -1,5 +1,6 @@
 import fnmatch
 import re
+import os
 import importlib
 import sys
 import time
@@ -193,7 +194,13 @@ class PythonRulesBlock(ZeroParameterRulesBlock):
             func_name = func_path.split('.')[-1]
             module_path = ".".join(func_path.split('.')[0:-1])
             with add_sys_path(sys_path):
-                mod = importlib.import_module(module_path)
+                importlib.invalidate_caches()
+                spec = importlib.util.spec_from_file_location(
+                    "my_custom_function",
+                    os.path.join(sys_path, module_path + ".py")
+                )
+                mod = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(mod)
                 func = getattr(mod, func_name)
                 self._funcs[rule_pattern] = func
         return self._funcs[rule_pattern]
