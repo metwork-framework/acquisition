@@ -222,7 +222,7 @@ class AcquisitionStep(AcquisitionBase):
             if not success:
                 xaf.delete_or_nothing()
             else:
-                self.add_trace(xaf, self.failure_policy.move_dest_dir)
+                self.add_trace(xaf, self.failure_policy_move_dest_dir)
 
     def _after(self, xaf, process_status):
         if process_status:
