@@ -15,5 +15,6 @@
 - fix issue in get_config_value with default values
 - fix cache issue with python custom functions with same name
 - fix issue with decorators and some failure policies
+- fix typo in some failure policy configurations
 
 
