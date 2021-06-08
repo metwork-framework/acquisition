@@ -40,6 +40,7 @@ class AcquisitionBase(object):
         validate_plugin_name(self.plugin_name)
         self.args = None
         self.__logger = None
+        self.step_name = None
 
     def _init(self):
         description = "%s/%s acquisition step" % (
@@ -126,7 +127,7 @@ class AcquisitionBase(object):
         if not self.__logger:
             logger_name = "mfdata.%s.%s" % (
                 self.plugin_name,
-                self.step_name,
+                self.step_name if self.step_name is not None else "notset",
             )
             self.__logger = mflog.getLogger(logger_name)
         return self.__logger
