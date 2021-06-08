@@ -1,5 +1,5 @@
 import os.path
-import time
+import datetime
 from acquisition import AcquisitionStep
 from mfutil import mkdir_p_or_die, get_unique_hexa_identifier
 from acquisition.utils import get_plugin_step_directory_path
@@ -82,7 +82,7 @@ class AcquisitionMoveStep(AcquisitionStep):
         for to_replace, replaced in replaces.items():
             tmp = tmp.replace(to_replace, replaced)
         if '%' in tmp:
-            return time.strftime(tmp)
+            return datetime.datetime.now().strftime(tmp)
         else:
             return tmp
 
