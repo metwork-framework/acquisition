@@ -61,13 +61,20 @@ class AcquisitionStep(AcquisitionBase):
             if "/" not in fpmdd or fpmdd.startswith('/'):
                 self.error_and_die(
                     "failure-policy-move-dest-dir must be something like "
-                    "plugin_name/step_name")
-            mkdir_p_or_die(fpmdd)
-            plugin_name = fpmdd.split('/')[0]
-            step_name = fpmdd.split('/')[1]
-            self.add_virtual_trace(plugin_name, step_name)
-            self.failure_policy_move_dest_dir = \
-                get_plugin_step_directory_path(plugin_name, step_name)
+                    "plugin_name/step_name or an absolute path")
+            if fpmdd.startswith('/'):
+                # absolute dir
+                mkdir_p_or_die(fpmdd)
+                self.add_virtual_trace(fpmdd)
+                self.failure_policy_move_dest_dir = fpmdd
+            else:
+                # plugin_name/step_name
+                plugin_name = fpmdd.split('/')[0]
+                step_name = fpmdd.split('/')[1]
+                self.add_virtual_trace(plugin_name, step_name)
+                self.failure_policy_move_dest_dir = \
+                    get_plugin_step_directory_path(plugin_name, step_name)
+                mkdir_p_or_die(self.failure_policy_move_dest_dir)
         signal.signal(signal.SIGTERM, self.__sigterm_handler)
 
     def _add_extra_arguments_before(self, parser):
@@ -101,7 +108,7 @@ class AcquisitionStep(AcquisitionBase):
             action="store",
             default=None,
             help="dest-dir in case of move failure policy (must be something "
-            "like plugin_name/step_name",
+            "like plugin_name/step_name or an absolute dir path)",
         )
 
     def _add_extra_arguments_after(self, parser):
