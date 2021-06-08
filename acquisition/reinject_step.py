@@ -102,10 +102,10 @@ class AcquisitionReinjectStep(AcquisitionStep):
         self.get_stats_client().incr("bytes_of_processed_files", xaf.getsize())
 
     def give_up(self, xaf):
-        self.warning("max retry attempt for %s => deleting", xaf.filepath)
+        self.warning("max retry attempt for %s => invoking trash policy",
+                     xaf.filepath)
         self.get_stats_client().incr("number_of_processing_errors", 1)
-        self.add_trace(xaf, ">delete", "giveup")
-        xaf.delete_or_nothing()
+        self._trash(xaf)
 
     def ping(self):
         now = time.time()
@@ -116,8 +116,8 @@ class AcquisitionReinjectStep(AcquisitionStep):
                     del(self.__xafs[filepath])
                 mtime, retry_attempt, xaf = self.__xafs[filepath]
                 if retry_attempt >= self.retry_total:
-                    self.give_up(xaf)
                     del(self.__xafs[filepath])
+                    self.give_up(xaf)
                 delay = self.delay(retry_attempt + 1)
                 if now - mtime >= delay:
                     self.reinject(xaf, retry_attempt)
