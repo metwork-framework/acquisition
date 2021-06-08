@@ -46,6 +46,7 @@ class AcquisitionStep(AcquisitionBase):
         super(AcquisitionStep, self)._init()
         self.failure_policy = self.args.failure_policy
         self.failure_policy_move_dest_dir = None
+        self.failure_policy_move_absolute_dir = False
         if self.failure_policy not in ("keep", "delete", "move"):
             self.error_and_die(
                 "unknown failure policy: %s", self.failure_policy
@@ -58,7 +59,7 @@ class AcquisitionStep(AcquisitionBase):
                     "failure-policy-move-dest-dir"
                     " in case of move failure policy"
                 )
-            if "/" not in fpmdd or fpmdd.startswith('/'):
+            if "/" not in fpmdd:
                 self.error_and_die(
                     "failure-policy-move-dest-dir must be something like "
                     "plugin_name/step_name or an absolute path")
@@ -67,6 +68,7 @@ class AcquisitionStep(AcquisitionBase):
                 mkdir_p_or_die(fpmdd)
                 self.add_virtual_trace(fpmdd)
                 self.failure_policy_move_dest_dir = fpmdd
+                self.failure_policy_move_absolute_dir = True
             else:
                 # plugin_name/step_name
                 plugin_name = fpmdd.split('/')[0]
@@ -229,6 +231,9 @@ class AcquisitionStep(AcquisitionBase):
             if not success:
                 xaf.delete_or_nothing()
             else:
+                if self.failure_policy_move_absolute_dir:
+                    xaf.write_tags_in_a_file(new_filepath + ".tags")
+                    xattrfile.XattrFile(new_filepath).clear_tags()
                 self.add_trace(xaf, self.failure_policy_move_dest_dir)
 
     def _after(self, xaf, process_status):
