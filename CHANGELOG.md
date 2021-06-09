@@ -8,6 +8,7 @@
 - better python rule
 - add some logs
 - support multiple switch instances
+- better strftime placeholders
 
 ### Bug Fixes
 
@@ -16,5 +17,8 @@
 - fix cache issue with python custom functions with same name
 - fix issue with decorators and some failure policies
 - fix typo in some failure policy configurations
+- use failure policy instead of delete in reinject step
+- fix #8
+- fix #12
 
 
