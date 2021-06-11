@@ -20,5 +20,6 @@
 - use failure policy instead of delete in reinject step
 - fix #8
 - fix #12
+- fix typo in debug message (#17)
 
 
