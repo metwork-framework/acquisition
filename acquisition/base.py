@@ -40,7 +40,6 @@ class AcquisitionBase(object):
         validate_plugin_name(self.plugin_name)
         self.args = None
         self.__logger = None
-        self.step_name = None
 
     def _init(self):
         description = "%s/%s acquisition step" % (
