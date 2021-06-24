@@ -157,7 +157,7 @@ class RegexRulesBlock(OneParameterRulesBlock):
 
     def eval(self, xaf, rule_pattern):
         val = self.get_val_from_xaf(xaf)
-        res = re.match(val, rule_pattern)
+        res = re.match(rule_pattern, val)
         LOGGER.debug("re.match(%s, %s) switch rule => %s" %
                      (val, rule_pattern, res))
         return res
