@@ -123,7 +123,7 @@ class FnmatchRulesBlock(OneParameterRulesBlock):
 
     def eval(self, xaf, rule_pattern):
         val = self.get_val_from_xaf(xaf)
-        res = fnmatch.fnmatch(rule_pattern, val)
+        res = fnmatch.fnmatch(val, rule_pattern)
         LOGGER.debug("fnmatch.fnmatch(%s, %s) switch rule => %s" %
                      (val, rule_pattern, res))
         return res
