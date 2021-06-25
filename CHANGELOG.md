@@ -21,6 +21,6 @@
 - fix #8
 - fix #12
 - fix typo in debug message (#17)
-- fix shameful error in regex pattern matching
+- fix shameful error in latest fix
 
 
