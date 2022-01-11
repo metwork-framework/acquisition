@@ -5,9 +5,11 @@ import time
 from mfutil import mkdir_p_or_die, get_unique_hexa_identifier
 
 MFMODULE_RUNTIME_HOME = os.environ.get('MFMODULE_RUNTIME_HOME', '/tmp')
+MFDATA_DATA_IN_DIR = os.environ.get('MFDATA_DATA_IN_DIR', '/tmp')
+
 IN_DIR = os.path.join(MFMODULE_RUNTIME_HOME, "var", "in")
 TMP_DIR = os.path.join(MFMODULE_RUNTIME_HOME, "var", "in", "tmp")
-TRASH_DIR = os.path.join(MFMODULE_RUNTIME_HOME, "var", "in", "trash")
+TRASH_DIR = os.path.join(MFDATA_DATA_IN_DIR, "trash")
 REDIS_CONN = None
 
 
