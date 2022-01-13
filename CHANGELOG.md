@@ -23,5 +23,6 @@
 - fix typo in debug message (#17)
 - fix shameful error in latest fix
 - add missing import for python >= 3.9
+- fix #20 (#21)
 
 
