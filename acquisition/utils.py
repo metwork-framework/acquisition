@@ -1,7 +1,6 @@
 import os
 import datetime
 import redis
-import time
 from mfutil import mkdir_p_or_die, get_unique_hexa_identifier
 
 MFMODULE_RUNTIME_HOME = os.environ.get('MFMODULE_RUNTIME_HOME', '/tmp')
