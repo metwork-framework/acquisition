@@ -7,8 +7,7 @@ from mfutil import mkdir_p_or_die, get_unique_hexa_identifier
 MFMODULE_RUNTIME_HOME = os.environ.get('MFMODULE_RUNTIME_HOME', '/tmp')
 MFDATA_DATA_IN_DIR = os.environ.get('MFDATA_DATA_IN_DIR', '/tmp')
 
-IN_DIR = os.path.join(MFMODULE_RUNTIME_HOME, "var", "in")
-TMP_DIR = os.path.join(MFMODULE_RUNTIME_HOME, "var", "in", "tmp")
+TMP_DIR = os.path.join(MFDATA_DATA_IN_DIR, "tmp")
 TRASH_DIR = os.path.join(MFDATA_DATA_IN_DIR, "trash")
 REDIS_CONN = None
 
@@ -24,8 +23,8 @@ def __get_redis_conn():
 def add_trace(xaf, from_plugin, from_step, to_plugin, to_step="",
               virtual=False):
     r = __get_redis_conn()
-    if to_plugin.startswith(IN_DIR + "/step."):
-        tmp = to_plugin.replace(IN_DIR + "/step.", "").split('.')
+    if to_plugin.startswith(MFDATA_DATA_IN_DIR + "/step."):
+        tmp = to_plugin.replace(MFDATA_DATA_IN_DIR + "/step.", "").split('.')
         if len(tmp) == 2:
             to_plugin = tmp[0]
             to_step = tmp[1].replace('/', '')
@@ -48,7 +47,7 @@ def add_virtual_trace(from_plugin, from_step, to_plugin, to_step=""):
 
 
 def get_plugin_step_directory_path(plugin_name, step_name):
-    return os.path.join(IN_DIR, "step.%s.%s" % (plugin_name, step_name))
+    return os.path.join(MFDATA_DATA_IN_DIR, "step.%s.%s" % (plugin_name, step_name))
 
 
 def dest_dir_to_absolute(dest_dir, allow_absolute=True):
