@@ -9,6 +9,10 @@ from acquisition.switch_rules import RulesReader, HardlinkAction, RulesSet
 
 MFDATA_CURRENT_PLUGIN_DIR = os.environ.get("MFDATA_CURRENT_PLUGIN_DIR",
                                            "{{MFDATA_CURRENT_PLUGIN_DIR}}")
+MFDATA_INTERNAL_PLUGINS_SWITCH_NO_MATCH_KEEP_ORIGINAL_BASENAME = \
+    os.environ.get(
+        "MFDATA_INTERNAL_PLUGINS_SWITCH_NO_MATCH_KEEP_ORIGINAL_BASENAME",
+        "0").strip() == '1'
 
 
 def md5sumfile(path):
@@ -69,9 +73,12 @@ class AcquisitionSwitchStep(AcquisitionCopyStep):
             self.stop_flag = True
 
     def _keep(self, xaf):
+        new_filename = xaf.basename()
+        if MFDATA_INTERNAL_PLUGINS_SWITCH_NO_MATCH_KEEP_ORIGINAL_BASENAME:
+            new_filename = xaf.tags['first.core.original_basename'].decode('utf8')
         new_filepath = os.path.join(
             _get_or_make_trash_dir(self.plugin_name, "nomatch"),
-            xaf.basename(),
+            new_filename,
         )
         old_filepath = xaf.filepath
         success, moved = xaf.move_or_copy(new_filepath)
