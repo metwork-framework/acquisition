@@ -9,6 +9,7 @@
 - add some logs
 - support multiple switch instances
 - better strftime placeholders
+- keep original file name in trash directory (#19) (#25)
 
 ### Bug Fixes
 
@@ -26,5 +27,6 @@
 - fix #20
 - fix #20 (#21)
 - use MFDATA_DATA_IN_DIR for tmp files
+- use MFDATA_DATA_IN_DIR for tmp files (#22)
 
 
