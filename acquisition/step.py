@@ -77,7 +77,7 @@ class AcquisitionStep(AcquisitionBase):
                 self.failure_policy_move_dest_dir = \
                     get_plugin_step_directory_path(plugin_name, step_name)
                 mkdir_p_or_die(self.failure_policy_move_dest_dir)
-        signal.signal(signal.SIGTERM, self.sigterm_handler)
+        signal.signal(signal.SIGTERM, self.__sigterm_handler)
 
     def _add_extra_arguments_before(self, parser):
         parser.add_argument(
@@ -597,6 +597,6 @@ class AcquisitionStep(AcquisitionBase):
         tag_name = self._get_original_dirname_tag_name()
         return xaf.tags.get(tag_name, b"unknown").decode("utf8")
 
-    def sigterm_handler(self, *args):
+    def __sigterm_handler(self, *args):
         self.debug("SIGTERM signal handled => schedulling shutdown")
         self.stop_flag = True
