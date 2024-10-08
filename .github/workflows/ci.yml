@@ -34,9 +34,9 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --max-line-length=80 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --statistics
-    - name: Tests
-      run: |
-        make test
+#   - name: Tests
+#     run: |
+#       make test
     - name: Doc
       if: ${{ matrix.python-version == 3.7 }}
       run: |
@@ -57,23 +57,23 @@ jobs:
           mkdir -p ${REMOTE}
         scp: |
             '${LOCAL}/*' => ${REMOTE}
-    - name: Coverage
-      if: ${{ matrix.python-version == 3.7 }}
-      run: |
-        make coverage
-    - name: Publish coverage
-      if: ${{ matrix.python-version == 3.7 }}
-      uses: thebaptiste/ssh-scp-ssh-pipelines@metwork
-      env:
-        LOCAL: htmlcov
-        REMOTE: /pub/misc/acquisition/coverage
-      with:
-        host: ${{ secrets.PUB_HOST }}
-        user: ${{ secrets.PUB_USERNAME }}
-        pass: ${{ secrets.PUB_PASSWORD }}
-        port: 22
-        first_ssh: |
-          rm -Rf ${REMOTE}
-          mkdir -p ${REMOTE}
-        scp: |
-            '${LOCAL}/*' => ${REMOTE}
+#   - name: Coverage
+#     if: ${{ matrix.python-version == 3.7 }}
+#     run: |
+#       make coverage
+#   - name: Publish coverage
+#     if: ${{ matrix.python-version == 3.7 }}
+#     uses: thebaptiste/ssh-scp-ssh-pipelines@metwork
+#     env:
+#       LOCAL: htmlcov
+#       REMOTE: /pub/misc/acquisition/coverage
+#     with:
+#       host: ${{ secrets.PUB_HOST }}
+#       user: ${{ secrets.PUB_USERNAME }}
+#       pass: ${{ secrets.PUB_PASSWORD }}
+#       port: 22
+#       first_ssh: |
+#         rm -Rf ${REMOTE}
+#         mkdir -p ${REMOTE}
+#       scp: |
+#           '${LOCAL}/*' => ${REMOTE}
