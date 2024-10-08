@@ -75,7 +75,7 @@ class AcquisitionSwitchStep(AcquisitionCopyStep):
     def _keep(self, xaf):
         new_filename = xaf.basename()
         if MFDATA_INTERNAL_PLUGINS_SWITCH_NO_MATCH_KEEP_ORIGINAL_BASENAME:
-            new_filename =
+            new_filename = \
                 xaf.tags['first.core.original_basename'].decode('utf8')
         new_filepath = os.path.join(
             _get_or_make_trash_dir(self.plugin_name, "nomatch"),
