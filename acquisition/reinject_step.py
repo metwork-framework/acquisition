@@ -113,15 +113,15 @@ class AcquisitionReinjectStep(AcquisitionStep):
         for filepath in filepaths:
             try:
                 if not os.path.exists(filepath):
-                    del(self.__xafs[filepath])
+                    del self.__xafs[filepath]
                 mtime, retry_attempt, xaf = self.__xafs[filepath]
                 if retry_attempt >= self.retry_total:
-                    del(self.__xafs[filepath])
+                    del self.__xafs[filepath]
                     self.give_up(xaf)
                 delay = self.delay(retry_attempt + 1)
                 if now - mtime >= delay:
                     self.reinject(xaf, retry_attempt)
-                    del(self.__xafs[filepath])
+                    del self.__xafs[filepath]
             except KeyError:
                 pass
 

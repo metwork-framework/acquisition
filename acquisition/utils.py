@@ -46,7 +46,8 @@ def add_virtual_trace(from_plugin, from_step, to_plugin, to_step=""):
 
 
 def get_plugin_step_directory_path(plugin_name, step_name):
-    return os.path.join(MFDATA_DATA_IN_DIR, "step.%s.%s" % (plugin_name, step_name))
+    return os.path.join(MFDATA_DATA_IN_DIR,
+                        "step.%s.%s" % (plugin_name, step_name))
 
 
 def dest_dir_to_absolute(dest_dir, allow_absolute=True):
