@@ -45,7 +45,7 @@ jobs:
       if: ${{ matrix.python-version == 3.7 }}
       uses: thebaptiste/ssh-scp-ssh-pipelines@metwork
       env:
-        LOCAL: html/aqcquisition
+        LOCAL: html/acquisition
         REMOTE: /pub/misc/acquisition/doc
       with:
         host: ${{ secrets.PUB_HOST }}
