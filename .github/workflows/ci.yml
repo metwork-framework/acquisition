@@ -34,51 +34,46 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --max-line-length=80 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --statistics
-#   - name: Tests
-#     run: |
-#       make test
+    - name: Tests
+      run: |
+        make test
     - name: Doc
       if: ${{ matrix.python-version == 3.7 }}
       run: |
         make doc
-    - name: Publish doc 1
+    - name: Publish doc
       if: ${{ matrix.python-version == 3.7 }}
-      uses: appleboy/ssh-action@master
+      uses: thebaptiste/ssh-scp-ssh-pipelines@metwork
+      env:
+        LOCAL: html/aqcquisition
+        REMOTE: /pub/misc/acquisition/doc
       with:
         host: ${{ secrets.PUB_HOST }}
-        username: ${{ secrets.PUB_USERNAME }}
-        password: ${{ secrets.PUB_PASSWORD }}
+        user: ${{ secrets.PUB_USERNAME }}
+        pass: ${{ secrets.PUB_PASSWORD }}
         port: 22
-        script: |
-          rm -Rf /pub/misc/acquisition/doc 2>/dev/null
-          mkdir /pub/misc/acquisition/doc
-    - name: Publish doc 2
+        first_ssh: |
+          rm -Rf ${REMOTE}
+          mkdir -p ${REMOTE}
+        scp: |
+            '${LOCAL}/*' => ${REMOTE}
+    - name: Coverage
       if: ${{ matrix.python-version == 3.7 }}
-      uses: garygrossgarten/github-action-scp@release
+      run: |
+        make coverage
+    - name: Publish coverage
+      if: ${{ matrix.python-version == 3.7 }}
+      uses: thebaptiste/ssh-scp-ssh-pipelines@metwork
+      env:
+        LOCAL: htmlcov
+        REMOTE: /pub/misc/acquisition/coverage
       with:
-        local: html/acquisition
-        remote: /pub/misc/acquisition/doc
         host: ${{ secrets.PUB_HOST }}
-        username: ${{ secrets.PUB_USERNAME }}
-        password: ${{ secrets.PUB_PASSWORD }}
-#   - name: Coverage
-#     run: |
-#       make coverage
-#   - name: Publish coverage 1
-#     uses: appleboy/ssh-action@master
-#     with:
-#       host: ${{ secrets.PUB_HOST }}
-#       username: ${{ secrets.PUB_USERNAME }}
-#       password: ${{ secrets.PUB_PASSWORD }}
-#       port: 22
-#       script: |
-#         rm -Rf coverage
-#         mkdir coverage
-#   - name: Publish coverage 2
-#     uses: garygrossgarten/github-action-scp@release
-#     with:
-#       local: htmlcov
-#       remote: coverage
-#       host: ${{ secrets.PUB_HOST }}
-#       username: ${{ secrets.PUB_USERNAME }}
-#       password: ${{ secrets.PUB_PASSWORD }}
+        user: ${{ secrets.PUB_USERNAME }}
+        pass: ${{ secrets.PUB_PASSWORD }}
+        port: 22
+        first_ssh: |
+          rm -Rf ${REMOTE}
+          mkdir -p ${REMOTE}
+        scp: |
+            '${LOCAL}/*' => ${REMOTE}
