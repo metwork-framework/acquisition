@@ -28,7 +28,7 @@ def add_trace(xaf, from_plugin, from_step, to_plugin, to_step="",
             to_plugin = tmp[0]
             to_step = tmp[1].replace('/', '')
     key = "trace@%s~%s/%s~%s/%s" % \
-        (datetime.datetime.utcnow().isoformat()[0:10],
+        (datetime.datetime.now(datetime.UTC).isoformat()[0:10],
          from_plugin, from_step, to_plugin, to_step)
     if r.exists(key):
         if not virtual:
@@ -99,4 +99,4 @@ def _get_tmp_filepath(plugin_name, step_name, forced_basename=None):
 
 
 def _get_current_utc_datetime_with_ms():
-    return datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S:%f")
+    return datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%S:%f")

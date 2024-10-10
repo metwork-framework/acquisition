@@ -250,7 +250,7 @@ class AcquisitionStep(AcquisitionBase):
         return process_status
 
     def _ping(self):
-        self.__last_ping = datetime.datetime.utcnow()
+        self.__last_ping = datetime.datetime.now(datetime.UTC)
         self._exception_safe_call(self.ping, [], {}, "ping", False)
 
     def __ping_if_needed(self):
@@ -258,7 +258,8 @@ class AcquisitionStep(AcquisitionBase):
             return
         if self.__last_ping is None:
             return self._ping()
-        delta = (datetime.datetime.utcnow() - self.__last_ping).total_seconds()
+        delta = (datetime.datetime.now(datetime.UTC) - \
+                self.__last_ping).total_seconds()
         if delta > 1:
             self._ping()
 

@@ -21,7 +21,7 @@ class AcquisitionBatch(object):
     def append(self, xaf):
         self._xafs.append(xaf)
         if self._start is None:
-            self._start = datetime.datetime.utcnow()
+            self._start = datetime.datetime.now(datetime.UTC)
 
     def get_size(self):
         return len(self._xafs)
@@ -29,7 +29,7 @@ class AcquisitionBatch(object):
     def get_age(self):
         if self._start is None:
             return 0
-        delta = datetime.datetime.utcnow() - self._start
+        delta = datetime.datetime.now(datetime.UTC) - self._start
         return delta.total_seconds()
 
     def is_ready(self):
