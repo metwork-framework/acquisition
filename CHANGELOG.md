@@ -28,5 +28,6 @@
 - fix #20 (#21)
 - use MFDATA_DATA_IN_DIR for tmp files
 - use MFDATA_DATA_IN_DIR for tmp files (#22)
+- replace deprecated utcnow() by now(datetime.UTC)
 
 
