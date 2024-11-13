@@ -99,4 +99,5 @@ def _get_tmp_filepath(plugin_name, step_name, forced_basename=None):
 
 
 def _get_current_utc_datetime_with_ms():
-    return datetime.now(timezone.utc).replace(tzinfo=None).strftime("%Y-%m-%dT%H:%M:%S:%f")
+    return datetime.now(timezone.utc).replace(
+            tzinfo=None).strftime("%Y-%m-%dT%H:%M:%S:%f")

@@ -15,7 +15,7 @@ class AcquisitionUncompressStep(AcquisitionTransformStep):
     def transform(self, xaf):
         tmp_filepath = self.get_tmp_filepath()
         try:
-            with self.cmodule.open(xaf.filepath, 'rb') as f_in,\
+            with self.cmodule.open(xaf.filepath, 'rb') as f_in, \
                     open(tmp_filepath, 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
         except Exception:
