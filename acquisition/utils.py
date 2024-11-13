@@ -28,7 +28,7 @@ def add_trace(xaf, from_plugin, from_step, to_plugin, to_step="",
             to_plugin = tmp[0]
             to_step = tmp[1].replace('/', '')
     key = "trace@%s~%s/%s~%s/%s" % \
-        (datetime.now(timezone.utc).replace(tzinfo=None)).isoformat()[0:10],
+        (datetime.now(timezone.utc).replace(tzinfo=None).isoformat()[0:10],
          from_plugin, from_step, to_plugin, to_step)
     if r.exists(key):
         if not virtual:

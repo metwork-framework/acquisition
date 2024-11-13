@@ -258,7 +258,7 @@ class AcquisitionStep(AcquisitionBase):
             return
         if self.__last_ping is None:
             return self._ping()
-        delta = (datetime.now(timezone.utc).replace(tzinfo=None)) - \
+        delta = (datetime.now(timezone.utc).replace(tzinfo=None) - \
                 self.__last_ping).total_seconds()
         if delta > 1:
             self._ping()
