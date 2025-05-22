@@ -184,7 +184,6 @@ class AcquisitionDummyStatsDClient(AcquisitionStatsDClient):
 
 
 def get_stats_client(plugin_name, step_name, extra_tags={}):
-    global __CACHE
     key = "%s.%s" % (plugin_name, step_name)
     for v in extra_tags.values():
         key += ".%s" % v
