@@ -12,9 +12,9 @@ from acquisition import AcquisitionStep
 from acquisition.utils import _get_or_make_trash_dir
 from xattrfile import XattrFile
 import redis
-from mockredis import mock_redis_client
+import fakeredis
 
-redis.Redis = mock_redis_client
+redis.Redis = fakeredis.FakeRedis()
 
 
 def redirect_stderr_on_stdout():

@@ -9,9 +9,9 @@ from acquisition.decorators import ungzip, unbzip2, remove_first_line, \
     try_ungzip
 from xattrfile import XattrFile
 import redis
-from mockredis import mock_redis_client
+import fakeredis
 
-redis.Redis = mock_redis_client
+redis.Redis = fakeredis.FakeRedis()
 
 
 class AcquisitionTestNameStep(AcquisitionStep):
