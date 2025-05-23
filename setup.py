@@ -1,4 +1,3 @@
-import fastentrypoints  # noqa: F401
 import sys
 from setuptools import setup
 from setuptools import find_packages
