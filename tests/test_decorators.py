@@ -130,7 +130,7 @@ class DecoratorsTestCase(TestCase):
         x._debug_mode = True
         res = x._process(xaf)
         self.assertTrue(res)
-        self.assertEquals(x.content, "foo\n")
+        self.assertEqual(x.content, "foo\n")
 
     def test_remove_first_line_decorator_batch_step(self):
         x = AcquisitionTestBatchStep()
@@ -138,16 +138,16 @@ class DecoratorsTestCase(TestCase):
         xaf2 = make_tmp_xattrfile()
         xaf3 = make_tmp_xattrfile()
         x._process(xaf1)
-        self.assertEquals(x.batch_process_called, False)
+        self.assertEqual(x.batch_process_called, False)
         x._process(xaf2)
-        self.assertEquals(x.batch_process_called, False)
+        self.assertEqual(x.batch_process_called, False)
         x._process(xaf3)
-        self.assertEquals(x.batch_process_called, True)
-        self.assertEquals(x.batch_process_xaf_counter, 3)
+        self.assertEqual(x.batch_process_called, True)
+        self.assertEqual(x.batch_process_xaf_counter, 3)
         print(x.contents)
-        self.assertEquals(x.contents[0], "bar\n")
-        self.assertEquals(x.contents[1], "bar\n")
-        self.assertEquals(x.contents[2], "bar\n")
+        self.assertEqual(x.contents[0], "bar\n")
+        self.assertEqual(x.contents[1], "bar\n")
+        self.assertEqual(x.contents[2], "bar\n")
 
     def test_remove_first_line_decorator(self):
         x = AcquisitionTestStep3()
@@ -155,7 +155,7 @@ class DecoratorsTestCase(TestCase):
         x._debug_mode = True
         res = x._process(xaf)
         self.assertTrue(res)
-        self.assertEquals(x.content, "bar\n")
+        self.assertEqual(x.content, "bar\n")
 
     def test_bzip2_decorator(self):
         x = AcquisitionTestStep2()
@@ -163,7 +163,7 @@ class DecoratorsTestCase(TestCase):
         x._debug_mode = True
         res = x._process(xaf)
         self.assertTrue(res)
-        self.assertEquals(x.content, "foo\n")
+        self.assertEqual(x.content, "foo\n")
 
     def test_gzip_error(self):
         x = AcquisitionTestStep4()

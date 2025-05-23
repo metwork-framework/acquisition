@@ -42,7 +42,7 @@ class ForkTestCase(TestCase):
         self.assertTrue(res)
         with open(tmp_filepath, 'r') as f:
             content = f.read()
-        self.assertEquals(content, "foo\n")
+        self.assertEqual(content, "foo\n")
         os.unlink(tmp_filepath)
 
     def test_init_command_template_None(self):

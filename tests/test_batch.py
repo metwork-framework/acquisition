@@ -115,7 +115,7 @@ class BatchTestCase(TestCase):
         res = x._process(xaf2)
         self.assertFalse(res)
         x._destroy()
-        self.assertEquals(x.batch_process_xaf_counter, 2)
+        self.assertEqual(x.batch_process_xaf_counter, 2)
 
     def test_get_batch_max_size(self):
         x = AcquisitionBatchTestMaxSizeStep()
