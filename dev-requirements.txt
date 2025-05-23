@@ -6,4 +6,5 @@ pdoc3; python_version >= '3.8'
 pytest
 pytest-cov
 setuptools; python_version > '3.11'
+fastentrypoints; python_version > '3.12'
 fakeredis
