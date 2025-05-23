@@ -27,11 +27,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r dev-requirements.txt
     - name: install with pip -e
-      if: ${{ matrix.python-version == 3.12 }} || ${{ matrix.python-version == 3.13 }} 
+      if: ${{ matrix.python-version == 3.12 || matrix.python-version == 3.13 }} 
       run: |
         pip install -e . -v --no-build-isolation
     - name: install with setup.py develop
-      if: ${{ matrix.python-version != 3.12 }} && ${{ matrix.python-version != 3.13 }} 
+      if: ${{ matrix.python-version != 3.12 && matrix.python-version != 3.13 }} 
       run: |
         python setup.py develop
     - name: Lint with flake8
