@@ -42,7 +42,7 @@ class AcquisitionUtilsTestCase(TestCase):
     def test_get_tmp_filepath(self):
         f1 = utils._get_tmp_filepath("foo", "bar")
         f2 = utils._get_tmp_filepath("foo", "bar")
-        self.assertNotEquals(f1, f2)
+        self.assertNotEqual(f1, f2)
         self.assertTrue("foo.bar" in f1)
         self.assertTrue("foo.bar" in f2)
         with open(f1, "w") as f:
